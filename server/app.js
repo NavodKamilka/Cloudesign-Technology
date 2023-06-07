@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const postRouter = require("./api/post/post.router");
 const userRouter = require("./api/user/user.router");
+const recruiterRouter = require("./api/recruiter/recruiter.router");
 
 const app = express();
 app.use(express.json());
@@ -18,6 +19,7 @@ app.use(cors());
 
 app.use("/api/post", postRouter);
 app.use("/api/user", userRouter);
+app.use("/api/recruiter", recruiterRouter);
 
 
 const port = process.env.PORT || 4000;

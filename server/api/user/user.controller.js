@@ -26,7 +26,7 @@ const {
       });
     },
 
-    loginUser:  (req, res) => {
+    loginUser: async  (req, res) => {
       const body = req.body;
       loginUser(body , (err, results) => {
         //console.log("Result",results)

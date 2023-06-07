@@ -6,12 +6,14 @@ module.exports = {
 
   createUser: (data,hashedPassword, callBack) => {
     pool.query(
-      `insert into user(user_Name, email, password) 
-                values(?,?,?)`,
+      `insert into user(user_Name, email, password,role,phone) 
+                values(?,?,?,?,?)`,
       [
         data.user_Name,
         data.email,
         hashedPassword,
+        data.role,
+        data.phone
       ],
       (error, results, fields) => {
         if (error) {
@@ -23,12 +25,12 @@ module.exports = {
   },
 
   loginUser: async (data, callBack) => {
-      const user = data.user_Name
+      const email = data.email
       const password = data.password
       
       pool.query(
-        `select user_Name, password from user WHERE user_Name = ?`,
-        [user],
+        `select * from user WHERE email = ?`,
+        [email],
         async  (error, results, fields) => {
           //console.log("Result123", results.length)
           if (error) {
@@ -47,7 +49,7 @@ module.exports = {
                         console.log("---------> Login Successful");
 
                         // return callBack(null, `${user} is logged in!`);
-                        const token = jwt.sign({ user: user }, 'secret_key', { expiresIn: '1h' });
+                        const token = jwt.sign({ email: email ,user_Id : results[0].user_Id }, 'secret_key', { expiresIn: '1h' });
             
                         // Return the token in the callback
                         return callBack(null, token);
@@ -61,7 +63,6 @@ module.exports = {
           }
         }
           
-          // return callBack(null, results);
         
       );
   }
